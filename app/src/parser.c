@@ -63,7 +63,11 @@ __Z_INLINE bool_t parser_areEqual(uint16_t tokenidx, char *expected) {
     }
 
     int16_t len = parser_tx_obj.json.tokens[tokenidx].end - parser_tx_obj.json.tokens[tokenidx].start;
-    if (strlen(expected) != len) {
+    if (len < 0) {
+        return bool_false;
+    }
+
+    if (strlen(expected) != (size_t) len) {
         return bool_false;
     }
 
@@ -125,6 +129,10 @@ __Z_INLINE parser_error_t parser_formatAmount(uint16_t amountToken,
     MEMZERO(bufferUI, sizeof(bufferUI));
 
     const char *amountPtr = parser_tx_obj.tx + parser_tx_obj.json.tokens[amountToken + 2].start;
+    if (parser_tx_obj.json.tokens[amountToken + 2].start < 0) {
+        return parser_unexpected_buffer_end;
+    }
+
     const int16_t amountLen = parser_tx_obj.json.tokens[amountToken + 2].end -
                               parser_tx_obj.json.tokens[amountToken + 2].start;
     const char *denomPtr = parser_tx_obj.tx + parser_tx_obj.json.tokens[amountToken + 4].start;

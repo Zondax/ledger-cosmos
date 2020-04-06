@@ -62,6 +62,7 @@ display_cache_t display_cache;
 parser_error_t tx_display_readTx(parser_context_t *ctx, const uint8_t *data, size_t dataLen) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
     CHECK_PARSER_ERR(_readTx(ctx, &parser_tx_obj))
+    return parser_ok;
 }
 
 parser_error_t tx_indexRootFields() {

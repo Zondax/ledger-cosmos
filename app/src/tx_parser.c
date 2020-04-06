@@ -79,7 +79,7 @@ parser_error_t tx_getToken(uint16_t token_index,
     // empty strings are considered the first page
     *pageCount = 1;
     if (inLen > 0) {
-        for (int8_t i = 0; i < array_length(value_substitutions); i++) {
+        for (uint8_t i = 0; i < array_length(value_substitutions); i++) {
             const char *substStr = value_substitutions[i].str1;
             const size_t substStrLen = strlen(substStr);
             if (inLen == substStrLen && !MEMCMP(inValue, substStr, substStrLen)) {
