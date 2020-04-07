@@ -6,6 +6,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pull": "docker pull zondax/builder-bolos-emu:latest",
     "test": "jest --detectOpenHandles"
   },
   "repository": {
@@ -16,7 +17,7 @@
     "zondax"
   ],
   "dependencies": {
-    "@zondax/zemu": "^0.0.2",
+    "@zondax/zemu": "^0.0",
     "ledger-cosmos-js": "^2.1.7"
   },
   "devDependencies": {

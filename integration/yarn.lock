@@ -1260,10 +1260,10 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@zondax/zemu@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@zondax/zemu/-/zemu-0.0.2.tgz#b322668550cc8caf190bd498e31121040d5942f2"
-  integrity sha512-tiVYkgxnDrL4jcxv406faUGQMSqs+F2PRI15ZTME0pmPYJ+LLX70vA5+s8GVwfQ4nwko8VZZvAsEpDRlQezIzg==
+"@zondax/zemu@^0.0":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@zondax/zemu/-/zemu-0.0.3.tgz#1e6276b5c51e8760193d46ae0555742fd33897ed"
+  integrity sha512-/bdJ5PbzucotpNtqNOQPjPWnSvkPIY563ffktOWBgtWb/iKc2TdI/otBzDyihR4Cf/rV40uTdkjSiQoVJ5dnBQ==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@ledgerhq/hw-transport" "^5.12.0"
