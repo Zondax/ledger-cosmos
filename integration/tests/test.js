@@ -104,16 +104,16 @@ describe('Basic checks', function () {
             // do not wait here..
             const signatureRequest = app.sign(path, tx);
 
-            // // Reference window
-            // await sim.snapshot(Resolve("snapshots/0.png"));
-            //
-            // for (let i = 0; i < 50; i++) {
-            //     await sim.clickRight(Resolve(`snapshots/${i}.png`));
-            // }
+            await Zemu.sleep(2000);
 
-            await Zemu.sleep(50000);
+            // Reference window
+            await sim.snapshot(Resolve("snapshots/0.png"));
+
+            for (let i = 1; i < 20; i++) {
+                await sim.clickRight(Resolve(`snapshots/${i}.png`));
+            }
+
             await sim.close();
-
 
             let signature = await signatureRequest;
             console.log(signature);

@@ -142,7 +142,10 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
 
         const bool groupedField = strcmp("msgs/type", parser_tx_obj.query.out_key) == 0;
         const bool isMainIndex = parser_tx_obj.filter_msg_type_valid_idx != parser_tx_obj.query._item_index_current;
-        const bool skipItem = parser_tx_obj.flags.msg_type_grouping == 1u && groupedField && isMainIndex;
+        const bool skipItem = parser_tx_obj.flags.cache_valid == 1u &&
+                              parser_tx_obj.flags.msg_type_grouping == 1u &&
+                              groupedField &&
+                              isMainIndex;
 
         // Early bail out
         if (!skipItem && parser_tx_obj.query._item_index_current == parser_tx_obj.query.item_index) {

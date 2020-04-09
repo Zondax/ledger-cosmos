@@ -165,8 +165,9 @@ uint16_t tx_display_numItems() {
 
     uint16_t count = display_cache.total_item_count;
     // Remove grouped items from list
-    if (parser_tx_obj.flags.msg_type_grouping == 1u && parser_tx_obj.filter_msg_type_count) {
-        count -= parser_tx_obj.filter_msg_type_count - 1;
+    if (parser_tx_obj.flags.msg_type_grouping == 1u && parser_tx_obj.filter_msg_type_count > 0) {
+        count += 1; // we leave main type
+        count -= parser_tx_obj.filter_msg_type_count;
     }
 
     return count;

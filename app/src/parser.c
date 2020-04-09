@@ -23,12 +23,6 @@
 #include "parser_impl.h"
 #include "common/parser.h"
 
-__Z_INLINE parser_error_t parser_getItem_raw(const parser_context_t *ctx,
-                                             int8_t displayIdx,
-                                             char *outKey, uint16_t outKeyLen,
-                                             char *outVal, uint16_t outValLen,
-                                             uint8_t pageIdx, uint8_t *pageCount);
-
 parser_error_t parser_parse(parser_context_t *ctx,
                             const uint8_t *data,
                             size_t dataLen) {
@@ -82,16 +76,16 @@ __Z_INLINE bool_t parser_areEqual(uint16_t tokenidx, char *expected) {
 }
 
 __Z_INLINE bool_t parser_isAmount(char *key) {
-    if (strcmp(parser_tx_obj.query.out_key, "fee/amount") == 0)
+    if (strcmp(key, "fee/amount") == 0)
         return bool_true;
 
-    if (strcmp(parser_tx_obj.query.out_key, "msgs/inputs/coins") == 0)
+    if (strcmp(key, "msgs/inputs/coins") == 0)
         return bool_true;
 
-    if (strcmp(parser_tx_obj.query.out_key, "msgs/outputs/coins") == 0)
+    if (strcmp(key, "msgs/outputs/coins") == 0)
         return bool_true;
 
-    if (strcmp(parser_tx_obj.query.out_key, "msgs/value/amount") == 0)
+    if (strcmp(key, "msgs/value/amount") == 0)
         return bool_true;
 
     return bool_false;
