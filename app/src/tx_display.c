@@ -79,10 +79,14 @@ parser_error_t tx_indexRootFields() {
     parser_tx_obj.filter_msg_type_count = 0;
 
     for (int8_t root_item_idx = 0; root_item_idx < NUM_REQUIRED_ROOT_PAGES; root_item_idx++) {
-        const char *req_root_item_key = get_required_root_item( (root_item_e) root_item_idx);
-        const int16_t req_root_item_key_token_idx = object_get_value(&parser_tx_obj.json,
-                                                                     ROOT_TOKEN_INDEX,
-                                                                     req_root_item_key);
+        const char *req_root_item_key = get_required_root_item((root_item_e) root_item_idx);
+
+        uint16_t req_root_item_key_token_idx;
+
+        CHECK_PARSER_ERR(object_get_value(&parser_tx_obj.json,
+                                 ROOT_TOKEN_INDEX,
+                                 req_root_item_key,
+                                 &req_root_item_key_token_idx));
 
         // Remember root item start token
         display_cache.root_item_start_token_idx[root_item_idx] = req_root_item_key_token_idx;
@@ -158,10 +162,7 @@ parser_error_t tx_indexRootFields() {
 }
 
 uint16_t tx_display_numItems() {
-    parser_error_t err = tx_indexRootFields();
-    if (err != parser_ok) {
-        return 0;
-    }
+    CHECK_PARSER_ERR(tx_indexRootFields());
 
     uint16_t count = display_cache.total_item_count;
     // Remove grouped items from list
@@ -207,7 +208,7 @@ parser_error_t tx_display_query(uint16_t displayIdx,
     parser_tx_obj.query._item_index_current = 0;
     parser_tx_obj.query.max_level = root_max_level[root_index];
 
-    strncpy_s(outKey, get_required_root_item( (root_item_e) root_index), outKeyLen);
+    strncpy_s(outKey, get_required_root_item((root_item_e) root_index), outKeyLen);
     CHECK_PARSER_ERR(tx_traverse_find(
             display_cache.root_item_start_token_idx[root_index],
             ret_value_token_index))

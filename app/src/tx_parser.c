@@ -161,14 +161,18 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
         return parser_query_no_results;
     }
 
-    const int16_t el_count = object_get_element_count(root_token_index, &parser_tx_obj.json);
+    uint16_t el_count;
+    CHECK_PARSER_ERR(object_get_element_count(&parser_tx_obj.json, root_token_index, &el_count))
 
     switch (token_type) {
         case JSMN_OBJECT: {
             const size_t key_len = strlen(parser_tx_obj.query.out_key);
-            for (int16_t i = 0; i < el_count; ++i) {
-                const int16_t key_index = object_get_nth_key(root_token_index, i, &parser_tx_obj.json);
-                const int16_t value_index = object_get_nth_value(root_token_index, i, &parser_tx_obj.json);
+            for (uint16_t i = 0; i < el_count; ++i) {
+                uint16_t key_index;
+                uint16_t value_index;
+
+                CHECK_PARSER_ERR(object_get_nth_key(&parser_tx_obj.json, root_token_index, i, &key_index));
+                CHECK_PARSER_ERR(object_get_nth_value(&parser_tx_obj.json, root_token_index, i, &value_index));
 
                 // Skip writing keys if we are actually exploring to count
                 append_key_item(key_index);
@@ -181,8 +185,7 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
                 parser_tx_obj.query.max_level++;
                 parser_tx_obj.query.max_depth++;
 
-                if (err == parser_ok)
-                    return err;
+                CHECK_PARSER_ERR(err);
 
                 *(parser_tx_obj.query.out_key + key_len) = 0;
             }
@@ -190,8 +193,10 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
         }
         case JSMN_ARRAY: {
             for (int16_t i = 0; i < el_count; ++i) {
-                const int16_t element_index = array_get_nth_element(root_token_index, i,
-                                                                    &parser_tx_obj.json);
+                uint16_t element_index;
+                CHECK_PARSER_ERR(array_get_nth_element(&parser_tx_obj.json,
+                                                       root_token_index, i,
+                                                       &element_index));
 
                 // When iterating along an array,
                 // the level does not change but we need to count the recursion
@@ -199,8 +204,7 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
                 err = tx_traverse_find(element_index, ret_value_token_index);
                 parser_tx_obj.query.max_depth++;
 
-                if (err == parser_ok)
-                    return err;
+                CHECK_PARSER_ERR(err);
             }
             break;
         }

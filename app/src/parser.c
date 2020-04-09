@@ -99,7 +99,10 @@ __Z_INLINE parser_error_t parser_formatAmount(uint16_t amountToken,
         amountToken++;
     }
 
-    uint16_t numElements = array_get_element_count(amountToken, &parser_tx_obj.json);
+    uint16_t numElements;
+
+    CHECK_PARSER_ERR(array_get_element_count(&parser_tx_obj.json, amountToken, &numElements));
+
     if (numElements == 0) {
         *pageCount = 1;
         snprintf(outVal, outValLen, "Empty");
