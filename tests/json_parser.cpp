@@ -219,7 +219,6 @@ namespace {
         uint16_t token_index;
         EXPECT_EQ(array_get_nth_element(&parsed_json, 2, -1, &token_index), parser_no_data)
                             << "Token index should be invalid (not found).";
-
     }
 
     TEST(TxValidationTest, ArrayElementGet_out_of_bounds) {
