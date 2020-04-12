@@ -34,7 +34,8 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
     CHECK_PARSER_ERR(tx_validate(&parser_tx_obj.json))
 
     // Iterate through all items to check that all can be shown and are valid
-    uint8_t numItems = parser_getNumItems(ctx);
+    uint16_t numItems = 0;
+    CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems));
 
     char tmpKey[40];
     char tmpVal[40];
@@ -47,8 +48,9 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
     return parser_ok;
 }
 
-uint8_t parser_getNumItems(const parser_context_t *ctx) {
-    return tx_display_numItems();
+parser_error_t parser_getNumItems(const parser_context_t *ctx, uint16_t *num_items) {
+    *num_items = 0;
+    return tx_display_numItems(num_items);
 }
 
 __Z_INLINE bool_t parser_areEqual(uint16_t tokenidx, char *expected) {
@@ -167,11 +169,13 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
     MEMZERO(outKey, outKeyLen);
     MEMZERO(outVal, outValLen);
 
-    if (parser_getNumItems(ctx) == 0) {
+    uint16_t numItems;
+    CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems))
+    if (numItems == 0) {
         return parser_unexpected_number_items;
     }
 
-    if (displayIdx < 0 || displayIdx >= parser_getNumItems(ctx)) {
+    if (displayIdx < 0 || displayIdx >= numItems) {
         return parser_display_idx_out_of_range;
     }
 

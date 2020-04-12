@@ -131,9 +131,10 @@ namespace {
         parser_error_t err = JSON_PARSE(&parser_tx_obj.json, parser_tx_obj.tx);
         EXPECT_EQ(err, parser_ok);
 
-        auto numItems = tx_display_numItems();
+        uint16_t numItems;
+        tx_display_numItems(&numItems);
 
-        EXPECT_EQ(1, numItems) << "Wrong number of pages";
+        EXPECT_EQ(1, numItems) << "Wrong number of items";
     }
 
     TEST(TxParse, Tx_Page_Count) {
@@ -144,8 +145,9 @@ namespace {
         parser_error_t err = JSON_PARSE(&parser_tx_obj.json, parser_tx_obj.tx);
         EXPECT_EQ(err, parser_ok);
 
-        auto num_pages = tx_display_numItems();
-        EXPECT_EQ(10, num_pages) << "Wrong number of pages";
+        uint16_t numItems;
+        tx_display_numItems(&numItems);
+        EXPECT_EQ(10, numItems) << "Wrong number of items";
     }
 
     TEST(TxParse, Page_Count_MultipleMsgs) {
@@ -157,6 +159,8 @@ namespace {
         parser_error_t err = JSON_PARSE(&parser_tx_obj.json, parser_tx_obj.tx);
         EXPECT_EQ(err, parser_ok);
 
-        EXPECT_EQ(22, tx_display_numItems()) << "Wrong number of items";
+        uint16_t numItems;
+        tx_display_numItems(&numItems);
+        EXPECT_EQ(22, numItems) << "Wrong number of items";
     }
 }
