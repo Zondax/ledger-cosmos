@@ -86,7 +86,7 @@ parser_error_t tx_indexRootFields() {
         CHECK_PARSER_ERR(object_get_value(&parser_tx_obj.json,
                                  ROOT_TOKEN_INDEX,
                                  req_root_item_key,
-                                 &req_root_item_key_token_idx));
+                                 &req_root_item_key_token_idx))
 
         // Remember root item start token
         display_cache.root_item_start_token_idx[root_item_idx] = req_root_item_key_token_idx;
@@ -162,7 +162,7 @@ parser_error_t tx_indexRootFields() {
 }
 
 uint16_t tx_display_numItems() {
-    CHECK_PARSER_ERR(tx_indexRootFields());
+    CHECK_PARSER_ERR(tx_indexRootFields())
 
     uint16_t count = display_cache.total_item_count;
     // Remove grouped items from list
@@ -286,8 +286,8 @@ static const key_subst_t key_substitutions[] = {
 //        {"msgs/value/validator_address", "Validator"},      // duplicated
 };
 
-void tx_display_make_friendly() {
-    tx_indexRootFields();
+parser_error_t tx_display_make_friendly() {
+    CHECK_PARSER_ERR(tx_indexRootFields())
 
     // post process keys
     for (size_t i = 0; i < array_length(key_substitutions); i++) {

@@ -48,7 +48,7 @@ parser_error_t tx_display_readTx(parser_context_t *c,
 /// \return number of pages (msg pages + 5 required)
 uint16_t tx_display_numItems();
 
-void tx_display_make_friendly();
+parser_error_t tx_display_make_friendly();
 
 //---------------------------------------------
 

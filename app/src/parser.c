@@ -164,6 +164,9 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                               uint8_t pageIdx, uint8_t *pageCount) {
     *pageCount = 0;
 
+    MEMZERO(outKey, outKeyLen);
+    MEMZERO(outVal, outValLen);
+
     if (parser_getNumItems(ctx) == 0) {
         return parser_unexpected_number_items;
     }
@@ -172,8 +175,8 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         return parser_display_idx_out_of_range;
     }
 
-    uint16_t ret_value_token_index;
-    tx_display_query(displayIdx, outKey, outKeyLen, &ret_value_token_index);
+    uint16_t ret_value_token_index = 0;
+    CHECK_PARSER_ERR(tx_display_query(displayIdx, outKey, outKeyLen, &ret_value_token_index));
 
     if (parser_isAmount(outKey)) {
         CHECK_PARSER_ERR(parser_formatAmount(
@@ -187,7 +190,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                 pageIdx, pageCount))
     }
 
-    tx_display_make_friendly();
+    CHECK_PARSER_ERR(tx_display_make_friendly())
 
     if (*pageCount > 1) {
         size_t keyLen = strlen(outKey);
