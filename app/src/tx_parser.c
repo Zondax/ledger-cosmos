@@ -185,7 +185,7 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
                 parser_tx_obj.query.max_level++;
                 parser_tx_obj.query.max_depth++;
 
-                if (err == parser_ok){
+                if (err == parser_ok) {
                     return parser_ok;
                 }
 
@@ -206,7 +206,9 @@ parser_error_t tx_traverse_find(int16_t root_token_index, uint16_t *ret_value_to
                 err = tx_traverse_find(element_index, ret_value_token_index);
                 parser_tx_obj.query.max_depth++;
 
-                CHECK_PARSER_ERR(err);
+                if (err == parser_ok) {
+                    return parser_ok;
+                }
             }
             break;
         }

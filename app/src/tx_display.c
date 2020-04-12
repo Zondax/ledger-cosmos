@@ -75,6 +75,10 @@ parser_error_t tx_indexRootFields() {
     char tmp_key[20];
     char tmp_val[40];
     char tmp_val_ref[40];
+    MEMZERO(&tmp_key, sizeof(tmp_key));
+    MEMZERO(&tmp_val, sizeof(tmp_val));
+    MEMZERO(&tmp_val_ref, sizeof(tmp_val_ref));
+
     parser_tx_obj.flags.msg_type_grouping = 1;
     parser_tx_obj.filter_msg_type_count = 0;
 
@@ -83,10 +87,12 @@ parser_error_t tx_indexRootFields() {
 
         uint16_t req_root_item_key_token_idx;
 
-        CHECK_PARSER_ERR(object_get_value(&parser_tx_obj.json,
-                                 ROOT_TOKEN_INDEX,
-                                 req_root_item_key,
-                                 &req_root_item_key_token_idx))
+        CHECK_PARSER_ERR(
+                object_get_value(
+                        &parser_tx_obj.json,
+                        ROOT_TOKEN_INDEX,
+                        req_root_item_key,
+                        &req_root_item_key_token_idx))
 
         // Remember root item start token
         display_cache.root_item_start_token_idx[root_item_idx] = req_root_item_key_token_idx;
@@ -107,18 +113,20 @@ parser_error_t tx_indexRootFields() {
 
             uint16_t ret_value_token_index;
 
-            err = tx_traverse_find(display_cache.root_item_start_token_idx[root_item_idx],
-                                   &ret_value_token_index);
+            err = tx_traverse_find(
+                    display_cache.root_item_start_token_idx[root_item_idx],
+                    &ret_value_token_index);
 
             if (err != parser_ok) {
                 continue;
             }
 
             uint8_t pageCount;
-            CHECK_PARSER_ERR(tx_getToken(ret_value_token_index,
-                                         parser_tx_obj.query.out_val,
-                                         parser_tx_obj.query.out_key_len,
-                                         0, &pageCount))
+            CHECK_PARSER_ERR(tx_getToken(
+                    ret_value_token_index,
+                    parser_tx_obj.query.out_val,
+                    parser_tx_obj.query.out_key_len,
+                    0, &pageCount))
 
             if (root_item_idx == root_item_memo) {
                 if (strlen(parser_tx_obj.query.out_val) == 0) {
@@ -149,7 +157,7 @@ parser_error_t tx_indexRootFields() {
             current_item_idx++;
         }
 
-        if (err != parser_query_no_results) {
+        if (err != parser_query_no_results && err != parser_no_data) {
             return err;
         }
 
