@@ -23,11 +23,12 @@
 
 namespace {
     parser_error_t tx_traverse(int16_t root_token_index, uint8_t *numChunks) {
-        uint16_t ret_value_token_index;
+        uint16_t ret_value_token_index = 0;
         parser_error_t err = tx_traverse_find(root_token_index, &ret_value_token_index);
 
-        if (err != parser_ok)
+        if (err != parser_ok){
             return err;
+        }
 
         return tx_getToken(ret_value_token_index,
                            parser_tx_obj.query.out_val, parser_tx_obj.query.out_val_len,
@@ -40,7 +41,15 @@ namespace {
         parser_tx_obj.tx = transaction;
         parser_tx_obj.flags.cache_valid = 0;
         parser_error_t err = JSON_PARSE(&parser_tx_obj.json, parser_tx_obj.tx);
+
         ASSERT_EQ(err, parser_ok);
+        // Check some tokens
+        ASSERT_EQ(parser_tx_obj.json.numberOfTokens, 7) << "It should contain 7 = 1 (dict) + 6 (key+value)";
+        ASSERT_EQ(parser_tx_obj.json.tokens[0].start, 0);
+        ASSERT_EQ(parser_tx_obj.json.tokens[0].end, 46);
+        ASSERT_EQ(parser_tx_obj.json.tokens[0].size, 3) << "size should be 3 = 3 key/values contained in the dict";
+        ASSERT_EQ(parser_tx_obj.json.tokens[3].start, 19);
+        ASSERT_EQ(parser_tx_obj.json.tokens[3].end, 23);
 
         char key[100];
         char val[100];
@@ -105,7 +114,7 @@ namespace {
 
         INIT_QUERY_CONTEXT(key, sizeof(key), val, sizeof(val), 5, 4)
         err = tx_traverse(0, &numChunks);
-        EXPECT_EQ(err, parser_display_page_out_of_range) << "Item not found";
+        EXPECT_EQ(err, parser_display_page_out_of_range) << "This call should have resulted in a display out of range";
 
         // We should find it.. but later tx_display should fail
         INIT_QUERY_CONTEXT(key, sizeof(key), val, sizeof(val), 0, 4)
