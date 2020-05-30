@@ -1,6 +1,6 @@
 /*******************************************************************************
-*   (c) 2018-2020 Zondax GmbH
 *   (c) 2016 Ledger
+*   (c) 2018 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -15,29 +15,21 @@
 *  limitations under the License.
 ********************************************************************************/
 #pragma once
+#include "zxmacros.h"
+#include "stdbool.h"
 
-#include <stdint.h>
-#include "coin.h"
-
-#if defined(LEDGER_SPECIFIC)
-#include "bolos_target.h"
-#if defined(BOLOS_SDK)
-#include "os.h"
-#include "cx.h"
-#endif
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-/// view_init (initializes UI)
-void view_init();
+typedef struct {
+    uint32_t expert;
+} app_mode_t;
 
-/// view_idle_show (idle view - main menu + status)
-void view_idle_show(uint8_t item_idx);
+bool app_mode_expert();
 
-/// view_error (error view)
-void view_error_show();
+void app_mode_set_expert(uint8_t val);
 
-// shows address in the screen
-void view_address_show(address_kind_e addressKind);
-
-// Shows review screen + later sign menu
-void view_sign_show();
+#ifdef __cplusplus
+}
+#endif
