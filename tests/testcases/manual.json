@@ -1105,12 +1105,14 @@
     "validationErr": "No error",
     "expected": [
       "0 | Type : Withdraw Reward",
-      "1 | Validator [1/2] : cosmosvaloper1qwl879nx9t6kef4supyazayf7",
-      "1 | Validator [2/2] : vjhennyh568ys",
-      "2 | Validator [1/2] : cosmosvaloper1x88j7vp2xnw3zec8ur3g4waxy",
-      "2 | Validator [2/2] : cyz7m0mahdv3p",
-      "3 | Fee : 0.000600 ATOM",
-      "4 | Gas : 200000"
+      "1 | Delegator [1/2] : cosmos14lultfckehtszvzw4ehu0apvsr77afvy",
+      "1 | Delegator [2/2] : hgqhwh",
+      "2 | Validator [1/2] : cosmosvaloper1qwl879nx9t6kef4supyazayf7",
+      "2 | Validator [2/2] : vjhennyh568ys",
+      "3 | Validator [1/2] : cosmosvaloper1x88j7vp2xnw3zec8ur3g4waxy",
+      "3 | Validator [2/2] : cyz7m0mahdv3p",
+      "4 | Fee : 0.000600 ATOM",
+      "5 | Gas : 200000"
     ],
     "expert": false
   },
