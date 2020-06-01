@@ -321,6 +321,77 @@ describe('Basic checks', function () {
         }
     });
 
+    it('show address and sign basic', async function () {
+        const snapshotPrefixGolden = "snapshots/show-address-and-sign-basic/";
+        const snapshotPrefixTmp = "snapshots-tmp/show-address-and-sign-basic/";
+        let snapshotCount = 0;
+
+        const sim = new Zemu(APP_PATH);
+        try {
+            await sim.start(sim_options);
+            const app = new CosmosApp(sim.getTransport());
+
+            const path = [44, 118, 0, 0, 0];
+            let tx = JSON.stringify(example_tx_str_basic);
+
+            // get address / publickey
+            const respRequest = app.showAddressAndPubKey(path, "cosmos");
+
+            // We need to wait until the app responds to the APDU
+            await Zemu.sleep(2000);
+
+            // Now navigate the address / path
+            await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            await sim.clickBoth(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+
+            const respPk = await respRequest;
+            console.log(respPk);
+
+            expect(respPk.return_code).toEqual(0x9000);
+            expect(respPk.error_message).toEqual("No errors");
+            console.log(respPk)
+
+            // do not wait here..
+            const signatureRequest = app.sign(path, tx);
+
+            await Zemu.sleep(2000);
+
+            // Reference window
+            await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            for (let i = 0; i < 8; i++) {
+                await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
+            }
+            await sim.clickBoth();
+
+            let resp = await signatureRequest;
+            console.log(resp);
+
+            compareSnapshots(snapshotPrefixTmp, snapshotPrefixGolden, snapshotCount);
+
+            expect(resp.return_code).toEqual(0x9000);
+            expect(resp.error_message).toEqual("No errors");
+
+            // Now verify the signature
+            const hash = crypto.createHash("sha256");
+            const msgHash = Uint8Array.from(hash.update(tx).digest());
+
+            const signatureDER = resp.signature;
+            const signature = secp256k1.signatureImport(Uint8Array.from(signatureDER));
+
+            const pk = Uint8Array.from(respPk.compressed_pk)
+
+            const signatureOk = secp256k1.ecdsaVerify(signature, msgHash, pk);
+            expect(signatureOk).toEqual(true);
+
+        } finally {
+            await sim.close();
+        }
+    });
+
     it('sign expert', async function () {
         const snapshotPrefixGolden = "snapshots/sign-expert/";
         const snapshotPrefixTmp = "snapshots-tmp/sign-expert/";

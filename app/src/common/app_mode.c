@@ -33,8 +33,7 @@ bool app_mode_expert() {
 //    return expert;
 //    app_mode_t* p =(NV_VOL app_mode_t *)PIC(&N_appmode_impl);
 //    return p->expert;
-//    return app_mode.expert;
-    return false;
+    return app_mode.expert;
 }
 
 void app_mode_set_expert(uint8_t val) {
