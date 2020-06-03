@@ -54,7 +54,7 @@ __Z_INLINE void handleSignSecp256K1(volatile uint32_t *flags, volatile uint32_t 
 
     // Put address in output buffer, we will use it to confirm source address
     app_fill_address(addr_secp256k1);
-    parser_tx_obj.own_addr = G_io_apdu_buffer + VIEW_ADDRESS_OFFSET_SECP256K1;
+    parser_tx_obj.own_addr = (const char *)(G_io_apdu_buffer + VIEW_ADDRESS_OFFSET_SECP256K1);
 
     const char *error_msg = tx_parse();
 

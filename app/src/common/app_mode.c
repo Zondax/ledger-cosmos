@@ -26,6 +26,10 @@
 //#define N_APPMODE_PTR  ((NV_VOL app_mode_t *)PIC(&N_appmode))
 app_mode_t app_mode;
 
+void app_mode_reset(){
+    app_mode.expert = 0;
+}
+
 bool app_mode_expert() {
 //    TODO: read from NVRAM
 //    app_mode_t *p = N_APPMODE_PTR;
@@ -48,6 +52,10 @@ void app_mode_set_expert(uint8_t val) {
 //////////////////////////////////////////////////////////////
 
 app_mode_t app_mode;
+
+void app_mode_reset() {
+    app_mode.expert = 0;
+}
 
 bool app_mode_expert() {
     return app_mode.expert;

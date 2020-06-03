@@ -171,6 +171,7 @@ void app_init() {
     USB_power(0);
     USB_power(1);
 
+    app_mode_reset();
     if (app_mode_expert()) {
         view_idle_show(1);
     }

@@ -26,6 +26,8 @@ typedef struct {
     uint32_t expert;
 } app_mode_t;
 
+void app_mode_reset();
+
 bool app_mode_expert();
 
 void app_mode_set_expert(uint8_t val);
