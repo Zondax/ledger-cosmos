@@ -10,7 +10,7 @@ const APP_PATH = Resolve("../app/bin/app.elf");
 const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow sun young"
 const sim_options = {
     logging: true,
-    start_delay: 3000,
+    start_delay: 4000,
     custom: `-s "${APP_SEED}"`
     , X11: true
 };
@@ -327,7 +327,7 @@ describe('Basic checks', function () {
 
             // Reference window
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 9; i++) {
                 await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
             }
             await sim.clickBoth();
@@ -379,13 +379,15 @@ describe('Basic checks', function () {
             // do not wait here..
             const signatureRequest = app.sign(path, tx);
 
-            await Zemu.sleep(2000);
+            await Zemu.sleep(3000);
 
             // Reference window
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
             for (let i = 0; i < 10; i++) {
                 await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
             }
+            await sim.clickBoth();
+            await sim.clickBoth();
             await sim.clickBoth();
 
             let resp = await signatureRequest;
@@ -430,7 +432,7 @@ describe('Basic checks', function () {
             const respRequest = app.showAddressAndPubKey(path, "cosmos");
 
             // We need to wait until the app responds to the APDU
-            await Zemu.sleep(2000);
+            await Zemu.sleep(3000);
 
             // Now navigate the address / path
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
@@ -450,13 +452,15 @@ describe('Basic checks', function () {
             // do not wait here..
             const signatureRequest = app.sign(path, tx);
 
-            await Zemu.sleep(2000);
+            await Zemu.sleep(3000);
 
             // Reference window
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
             for (let i = 0; i < 8; i++) {
                 await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
             }
+            await sim.clickBoth();
+            await sim.clickBoth();
             await sim.clickBoth();
 
             let resp = await signatureRequest;
@@ -506,13 +510,15 @@ describe('Basic checks', function () {
             // do not wait here..
             const signatureRequest = app.sign(path, tx);
 
-            await Zemu.sleep(2000);
+            await Zemu.sleep(3000);
 
             // Reference window
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
             for (let i = 0; i < 15; i++) {
                 await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
             }
+            await sim.clickBoth();
+            await sim.clickBoth();
             await sim.clickBoth();
 
             let resp = await signatureRequest;

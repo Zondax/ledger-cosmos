@@ -164,7 +164,15 @@ static unsigned int view_review_button(unsigned int button_mask, unsigned int bu
 const bagl_element_t *view_prepro(const bagl_element_t *element) {
     switch (element->component.userid) {
         case UIID_ICONLEFT:
+            if (!h_paging_can_decrease()){
+                return NULL;
+            }
+            UX_CALLBACK_SET_INTERVAL(2000);
+            break;
         case UIID_ICONRIGHT:
+            if (!h_paging_can_increase()){
+                return NULL;
+            }
             UX_CALLBACK_SET_INTERVAL(2000);
             break;
         case UIID_LABELSCROLL:
