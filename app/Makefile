@@ -27,7 +27,7 @@ include $(BOLOS_SDK)/Makefile.defines
 # Main app configuration
 APPNAME = "Cosmos"
 APPVERSION_M=2
-APPVERSION_N=14
+APPVERSION_N=15
 APPVERSION_P=0
 
 APPPATH = "44'/118'"
@@ -78,8 +78,7 @@ DEFINES   += USB_SEGMENT_SIZE=64
 DEFINES   += HAVE_BOLOS_APP_STACK_CANARY
 DEFINES   += NDEBUG
 
-WEBUSB_URL     = www.ledgerwallet.com
-DEFINES       += HAVE_WEBUSB WEBUSB_URL_SIZE_B=$(shell echo -n $(WEBUSB_URL) | wc -c) WEBUSB_URL=$(shell echo -n $(WEBUSB_URL) | sed -e "s/./\\\'\0\\\',/g")
+DEFINES       += HAVE_WEBUSB WEBUSB_URL_SIZE_B=0 WEBUSB_URL=""
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
 DEFINES       += IO_SEPROXYHAL_BUFFER_SIZE_B=300
