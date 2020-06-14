@@ -87,8 +87,7 @@ UX_FLOW(
 void h_review(unsigned int _) { UNUSED(_); view_sign_show_impl(); }
 
 const ux_menu_entry_t menu_sign[] = {
-    {NULL, h_review, 0, NULL, "View transaction", NULL, 0, 0},
-    {NULL, h_sign_accept, 0, NULL, "Sign transaction", NULL, 0, 0},
+    {NULL, h_sign_accept, 0, NULL, "Approve", NULL, 0, 0},
     {NULL, h_sign_reject, 0, NULL, "Reject", NULL, 0, 0},
     UX_MENU_END
 };
