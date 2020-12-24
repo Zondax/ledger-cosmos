@@ -189,7 +189,7 @@ parser_error_t tx_indexRootFields() {
             CHECK_PARSER_ERR(tx_getToken(
                     ret_value_token_index,
                     parser_tx_obj.query.out_val,
-                    parser_tx_obj.query.out_key_len,
+                    parser_tx_obj.query.out_val_len,
                     0, &pageCount))
 
             switch (root_item_idx) {
@@ -205,6 +205,11 @@ parser_error_t tx_indexRootFields() {
                     if (parser_tx_obj.flags.msg_type_grouping && is_msg_type_field(tmp_key)) {
                         // First message, initialize expected type
                         if (parser_tx_obj.filter_msg_type_count == 0) {
+
+                            if (strlen(tmp_val) >= sizeof(reference_msg_type)) {
+                                return parser_unexpected_type;
+                            }
+
                             strcpy(reference_msg_type, tmp_val);
                             parser_tx_obj.filter_msg_type_valid_idx = current_item_idx;
                         }
@@ -420,15 +425,20 @@ static const key_subst_t key_substitutions[] = {
         {"msgs/type",                         "Type"},
 
         // FIXME: Are these obsolete?? multisend?
-        {"msgs/inputs/address",               "Source Address"},
-        {"msgs/inputs/coins",                 "Source Coins"},
-        {"msgs/outputs/address",              "Dest Address"},
-        {"msgs/outputs/coins",                "Dest Coins"},
+        {"msgs/value/inputs/address",               "Source Address"},
+        {"msgs/value/inputs/coins",                 "Source Coins"},
+        {"msgs/value/outputs/address",              "Dest Address"},
+        {"msgs/value/outputs/coins",                "Dest Coins"},
 
         // MsgSend
         {"msgs/value/from_address",           "From"},
         {"msgs/value/to_address",             "To"},
         {"msgs/value/amount",                 "Amount"},
+
+        // MsgSwap
+        {"msgs/value/trader",                 "Trader"},
+        {"msgs/value/offer_coin",             "Offer Coin"},
+        {"msgs/value/ask_denom",              "Ask Denom"},
 
         // MsgDelegate
         {"msgs/value/delegator_address",      "Delegator"},
@@ -464,6 +474,40 @@ static const key_subst_t key_substitutions[] = {
         // MsgWithdrawDelegationReward
 //        {"msgs/value/delegator_address", "Delegator"},      // duplicated
 //        {"msgs/value/validator_address", "Validator"},      // duplicated
+
+        // WASM
+        {"msgs/value/owner", "Owner"},
+        {"msgs/value/new_onwer", "New Owner"},
+        {"msgs/value/contract", "Contract"},
+        {"msgs/value/migrate_msg", "Migrate Msg"},
+        {"msgs/value/new_code_id", "New CodeID"},
+        {"msgs/value/sender", "Sender"},
+        {"msgs/value/execute_msg", "Execute Msg"},
+        {"msgs/value/coins", "Coins"},
+        {"msgs/value/init_coins", "Init Coins"},
+        {"msgs/value/code_id", "CodeID"},
+        {"msgs/value/init_msg", "Init Msg"},
+        {"msgs/value/migratable", "Migratable"},
+
+        // Oralce
+        {"msgs/value/hash", "Hash"},
+        {"msgs/value/denom", "Denom"},
+        {"msgs/value/feeder", "Feeder"},
+        {"msgs/value/validator", "Validator"},
+        {"msgs/value/exchange_rate", "Exchange Rate"},
+        {"msgs/value/salt", "Salt"},
+        {"msgs/value/operator", "Operator"},
+        {"msgs/value/delegate", "Delegate"},
+        {"msgs/value/exchange_rates", "Exchange Rates"},
+
+        // MsgAuthorization
+        {"msgs/value/granter", "Granter"},
+        {"msgs/value/grantee", "Grantee"},
+        {"msgs/value/authorization_msg_type", "Grant Msg Type"},
+        {"msgs/value/authorization/type", "Authorization Type"},
+        {"msgs/value/authorization/value/grant_msg_type", "Grant Msg Type"},
+        {"msgs/value/authorization/value/spend_limit", "Spend Limit"},
+        {"msgs/value/period", "Period"},
 };
 
 parser_error_t tx_display_make_friendly() {
